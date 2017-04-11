@@ -46,7 +46,7 @@ value call(value clos, value arg) {
 
 value println(value arg) {
    printf("%d\n", arg.num);
-   return arg;
+   return (value) 0;
 }
 
 @(transform-lams (extract-lams ast))
@@ -175,13 +175,7 @@ value init_lam@|i|(@(init-lam-param-list env)) {
 (define (binop? sym)
   (member sym '(+ *)))
 
-;; Read lambda calculus term from command line arg and write output to output.c
-(define source-file
-  (command-line #:args (filename) filename))
-
-(with-input-from-file source-file
-  (λ ()
-    (with-output-to-file "output.c"
-      (λ ()
-        (display (transform (read))))))
-  #:mode 'text)
+;; Read lambda calculus term from filename on command line and write output to output.c
+(display-to-file
+ (transform (file->value (command-line #:args (filename) filename)))
+ "output.c" #:exists 'truncate/replace)

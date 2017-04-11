@@ -20,7 +20,7 @@ value call(value clos, value arg) {
 
 value println(value arg) {
    printf("%d\n", arg.num);
-   return arg;
+   return (value) 0;
 }
 
 
